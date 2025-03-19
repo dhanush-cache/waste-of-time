@@ -55,13 +55,17 @@
         color: red;
       }
 
+      .success {
+        color: green;
+      }
+
       .form-group {
         margin-bottom: 1rem;
       }
     </style>
   </head>
   <body ng-app="myApp" ng-controller="FormController">
-    <form name="myForm" novalidate>
+    <form name="myForm" novalidate ng-submit="handleSubmit()">
       <div class="form-group">
         <label for="name">Name:</label>
         <input
@@ -113,7 +117,7 @@
         ></textarea>
         <span
           class="error"
-          ng-show="myForm.username.$dirty && myForm.username.$error.required"
+          ng-show="myForm.address.$dirty && myForm.address.$error.required"
         >
           Address is required.
         </span>
@@ -141,29 +145,31 @@
       <div class="form-group">
         <input
           type="checkbox"
+          id="terms"
           name="terms"
           ng-model="user.terms"
           ng-required="true"
         />
-        <span for="terms">I agree to the terms</span>
-        <span
-          class="error"
-          ng-show="myForm.email.$dirty && myForm.email.$error.required"
-        >
-          Email is required.
+        <label for="terms">I agree to the terms</label>
+        <span class="error" ng-show="myForm.terms.$error.required">
+          You should agree to the terms of service.
         </span>
-        <div class="error" ng-show="myForm.terms.$error.required">
-          You should agree the terms of service
-        </div>
       </div>
 
       <button type="submit" ng-disabled="myForm.$invalid">Submit</button>
     </form>
+    <p class="success">{{message}}</p>
 
     <script>
       let app = angular.module("myApp", []);
       app.controller("FormController", function ($scope) {
         $scope.user = {};
+        $scope.message = "";
+
+        $scope.handleSubmit = function () {
+          console.log("Form Submitted", $scope.user);
+          $scope.message = "Form Submitted Successfully!";
+        };
       });
     </script>
   </body>
